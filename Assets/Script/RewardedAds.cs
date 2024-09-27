@@ -1,3 +1,4 @@
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.Advertisements;
@@ -5,12 +6,10 @@ using UnityEngine.Advertisements;
 public class RewardedAds : MonoBehaviour, IUnityAdsLoadListener, IUnityAdsShowListener
 {
     [SerializeField] Button _showAdButton;
-     [SerializeField]
     private string _androidAdUnitId = "Rewarded_Android";
-    [SerializeField]   
     private string _iOSAdUnitId = "Rewarded_iOS";
     string _adUnitId = null; // This will remain null for unsupported platforms
- 
+    [SerializeField] private TextMeshProUGUI _CoinText; 
     void Awake()
     {   
         // Get the Ad Unit ID for the current platform:
@@ -36,7 +35,7 @@ public class RewardedAds : MonoBehaviour, IUnityAdsLoadListener, IUnityAdsShowLi
     public void OnUnityAdsAdLoaded(string adUnitId)
     {
         Debug.Log("Ad Loaded: " + adUnitId);
- 
+      
         if (adUnitId.Equals(_adUnitId))
         {
             // Configure the button to call the ShowAd() method when clicked:
@@ -60,6 +59,8 @@ public class RewardedAds : MonoBehaviour, IUnityAdsLoadListener, IUnityAdsShowLi
     {
         if (adUnitId.Equals(_adUnitId) && showCompletionState.Equals(UnityAdsShowCompletionState.COMPLETED))
         {
+            int.TryParse(_CoinText.text, out int coin);
+            _CoinText.text = (coin + 1).ToString();
             Debug.Log("Unity Ads Rewarded Ad Completed");
             // Grant a reward.
         }
